@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict OnEwN9qz36u07ForqPtZUd489cNswZMy8ssXb0jwxzZFbv4lQbJF3WDlRRgO4Wc
+\restrict 9Zce5eDemwb2NhHmZFKJq8uhNqRdannYpvqA8fTuOlzwZhdt8DR2pLFIZe3fUGl
 
 -- Dumped from database version 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)
 -- Dumped by pg_dump version 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)
@@ -349,8 +349,10 @@ ALTER TABLE ONLY public.venta ALTER COLUMN id_venta SET DEFAULT nextval('public.
 COPY public.articulo (id_articulo, nombre, descripcion, precio, stock, id_categoria) FROM stdin;
 1	Portátil Lenovo IdeaPad 3	15.6", 8 GB RAM, 512 GB SSD	2350000.00	9	1
 2	Samsung Galaxy A55	128 GB, 8 GB RAM	1650000.00	14	2
-4	Audífonos JBL Tune 520BT	Bluetooth	199000.00	19	3
 3	Mouse Logitech M170	Inalámbrico	45000.00	47	3
+4	Audífonos JBL Tune 520BT	Bluetooth	199000.00	16	3
+5	Pencil	Lápiz digital	500000.00	20	3
+6	DYSON	Multiestilizador de pelo	5000000.00	19	3
 \.
 
 
@@ -362,6 +364,7 @@ COPY public.categoria (id_categoria, nombre, descripcion) FROM stdin;
 1	Computadores	Portátiles y equipos de escritorio
 2	Celulares	Smartphones y accesorios
 3	Accesorios	Mouse, teclados, audífonos y similares
+4	Cocina	Artículos utilizados en la cocina
 \.
 
 
@@ -384,6 +387,8 @@ COPY public.cliente (id_cliente, nombre, apellido, email, telefono, direccion, i
 1012345678	Laura	Pérez	laura.perez@mail.com	3101234567	Cra 33 # 15-20	1
 1023456789	Carlos	Gómez	carlos.gomez@mail.com	3209876543	Calle 80 # 10-45	2
 1034567890	Ana	Torres	ana.torres@mail.com	3005558899	Av 70 # 45-12	3
+1013266164	Andres Jeronimo	Puerta Lopez	puertalopezandresjeronimo@gmail.com	3218540434	calle 20 #34 A-12	1
+1123805015	Heidy Nicole	Velez Martinez	velezmartinezheidynicol@gmail.com	3108765077	Calle 39c #27A - 46	1
 \.
 
 
@@ -397,6 +402,10 @@ COPY public.detalle_venta (id_venta, id_articulo, cantidad) FROM stdin;
 2	2	1
 2	4	1
 3	3	1
+4	5	4
+4	4	3
+5	5	6
+6	6	1
 \.
 
 
@@ -407,7 +416,10 @@ COPY public.detalle_venta (id_venta, id_articulo, cantidad) FROM stdin;
 COPY public.forma_pago (id_pago, tipo, monto, fecha_pago, estado, id_venta) FROM stdin;
 1	PSE	2440000.00	2026-10-01	Aprobado	1
 2	Tarjeta Visa	1849000.00	2026-10-06	Aprobado	2
-3	Efecty	45000.00	2026-10-10	Pendiente	3
+5	Tarjeta Visa	2597000.00	2026-10-31	Aprobado	4
+3	Efecty	45000.00	2026-10-10	Aprobado	3
+6	Transferencia Bancaria	3000000.00	2026-10-31	Aprobado	5
+7	PSE	5000000.00	2026-11-01	Aprobado	6
 \.
 
 
@@ -416,9 +428,12 @@ COPY public.forma_pago (id_pago, tipo, monto, fecha_pago, estado, id_venta) FROM
 --
 
 COPY public.venta (id_venta, fecha, estado, direccion_envio, id_cliente) FROM stdin;
-1	2026-10-01	Pagada	Cra 33 # 15-20	1012345678
-2	2026-10-05	Enviada	Calle 80 # 10-45	1023456789
-3	2026-10-10	Pendiente	Av 70 # 45-12	1034567890
+4	2026-10-31	Entregada	calle 20 #34 A-12	1013266164
+3	2026-10-10	Entregada	Av 70 # 45-12	1034567890
+2	2026-10-05	Entregada	Calle 80 # 10-45	1023456789
+1	2026-10-01	Entregada	Cra 33 # 15-20	1012345678
+5	2026-10-31	Entregada	Calle 80 # 10-45	1023456789
+6	2026-11-01	Entregada	Calle 39c #27A - 46	1123805015
 \.
 
 
@@ -426,35 +441,35 @@ COPY public.venta (id_venta, fecha, estado, direccion_envio, id_cliente) FROM st
 -- Name: articulo_id_articulo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.articulo_id_articulo_seq', 4, true);
+SELECT pg_catalog.setval('public.articulo_id_articulo_seq', 6, true);
 
 
 --
 -- Name: categoria_id_categoria_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.categoria_id_categoria_seq', 3, true);
+SELECT pg_catalog.setval('public.categoria_id_categoria_seq', 4, true);
 
 
 --
 -- Name: ciudad_id_ciudad_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.ciudad_id_ciudad_seq', 3, true);
+SELECT pg_catalog.setval('public.ciudad_id_ciudad_seq', 4, true);
 
 
 --
 -- Name: forma_pago_id_pago_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.forma_pago_id_pago_seq', 3, true);
+SELECT pg_catalog.setval('public.forma_pago_id_pago_seq', 7, true);
 
 
 --
 -- Name: venta_id_venta_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.venta_id_venta_seq', 3, true);
+SELECT pg_catalog.setval('public.venta_id_venta_seq', 6, true);
 
 
 --
@@ -592,8 +607,99 @@ ALTER TABLE ONLY public.venta
 
 
 --
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: pg_database_owner
+--
+
+GRANT USAGE ON SCHEMA public TO app_ventas;
+
+
+--
+-- Name: TABLE articulo; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.articulo TO app_ventas;
+
+
+--
+-- Name: SEQUENCE articulo_id_articulo_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,USAGE ON SEQUENCE public.articulo_id_articulo_seq TO app_ventas;
+
+
+--
+-- Name: TABLE categoria; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.categoria TO app_ventas;
+
+
+--
+-- Name: SEQUENCE categoria_id_categoria_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,USAGE ON SEQUENCE public.categoria_id_categoria_seq TO app_ventas;
+
+
+--
+-- Name: TABLE ciudad; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.ciudad TO app_ventas;
+
+
+--
+-- Name: SEQUENCE ciudad_id_ciudad_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,USAGE ON SEQUENCE public.ciudad_id_ciudad_seq TO app_ventas;
+
+
+--
+-- Name: TABLE cliente; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.cliente TO app_ventas;
+
+
+--
+-- Name: TABLE detalle_venta; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.detalle_venta TO app_ventas;
+
+
+--
+-- Name: TABLE forma_pago; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.forma_pago TO app_ventas;
+
+
+--
+-- Name: SEQUENCE forma_pago_id_pago_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,USAGE ON SEQUENCE public.forma_pago_id_pago_seq TO app_ventas;
+
+
+--
+-- Name: TABLE venta; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.venta TO app_ventas;
+
+
+--
+-- Name: SEQUENCE venta_id_venta_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,USAGE ON SEQUENCE public.venta_id_venta_seq TO app_ventas;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict OnEwN9qz36u07ForqPtZUd489cNswZMy8ssXb0jwxzZFbv4lQbJF3WDlRRgO4Wc
+\unrestrict 9Zce5eDemwb2NhHmZFKJq8uhNqRdannYpvqA8fTuOlzwZhdt8DR2pLFIZe3fUGl
 
